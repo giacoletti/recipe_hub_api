@@ -4,7 +4,7 @@ RSpec.describe Recipe, type: :model do
     it { is_expected.to have_db_column(:instructions).of_type(:text) }
   end
 
-  describe 'Associations' do
+  describe 'Validations' do
     it { is_expected.to validate_presence_of :title }
     it { is_expected.to validate_presence_of :instructions }
   end
