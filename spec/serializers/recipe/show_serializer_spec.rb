@@ -24,7 +24,7 @@ RSpec.describe Recipe::ShowSerializer, type: :serializer do
         'id' => an_instance_of(Integer),
         'title' => an_instance_of(String),
         'instructions' => an_instance_of(String),
-        'ingredients' => an_instance_of(String)
+        'ingredients' => an_instance_of(Array)
       }
     )
   end
