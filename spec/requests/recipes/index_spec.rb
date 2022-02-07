@@ -1,14 +1,14 @@
 RSpec.describe 'GET /api/recipes', type: :request do
+  subject { response }
+  let(:recipe) { create(:recipe) }
   describe 'successfully' do
-    subject { response }
-
     before do
       get '/api/recipes'
     end
 
     it { is_expected.to have_http_status :ok }
 
-    it 'is expected to respond with an empty array' do
+    it 'is expected to respond the title of first recipe' do
       expect(response_json['recipes'].first['title']).to eq 'Fried rice with kimchi'
     end
   end

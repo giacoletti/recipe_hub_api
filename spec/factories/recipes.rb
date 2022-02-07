@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :recipe do
-    title { "MyString" }
-    instructions { "MyText" }
+    title { 'Fried rice with kimchi' }
+    instructions { 'MyText' }
   end
 end
