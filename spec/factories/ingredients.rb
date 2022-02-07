@@ -1,7 +1,8 @@
 FactoryBot.define do
   factory :ingredient do
-    amount { 1.5 }
-    unit { "MyString" }
-    name { "MyString" }
+    amount { 2.5 }
+    unit { 'dl' }
+    name { 'sugar' }
+    recipe
   end
 end
