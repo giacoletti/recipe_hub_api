@@ -1,6 +1,6 @@
 RSpec.describe 'GET /api/recipes', type: :request do
   subject { response }
-  let(:recipe) { create(:recipe) }
+  let!(:recipe) { create(:recipe) }
   describe 'successfully' do
     before do
       get '/api/recipes'
