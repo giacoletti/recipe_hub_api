@@ -25,7 +25,6 @@ RSpec.describe Recipe::IndexSerializer, type: :serializer do
         'instructions' => an_instance_of(String),
         'created_at' => an_instance_of(String),
         'updated_at' => an_instance_of(String)
-
       }
     )
   end
