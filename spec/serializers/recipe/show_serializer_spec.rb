@@ -14,7 +14,7 @@ RSpec.describe Recipe::ShowSerializer, type: :serializer do
   end
 
   it 'is expected to include relevant keys' do
-    expected_keys = %w[id title instructions ingredients]
+    expected_keys = %w[id title instructions ingredients created_at]
     expect(subject['recipe'].keys).to match expected_keys
   end
 
@@ -24,7 +24,8 @@ RSpec.describe Recipe::ShowSerializer, type: :serializer do
         'id' => an_instance_of(Integer),
         'title' => an_instance_of(String),
         'instructions' => an_instance_of(String),
-        'ingredients' => an_instance_of(Array)
+        'ingredients' => an_instance_of(Array),
+        'created_at' => an_instance_of(String)
       }
     )
   end
