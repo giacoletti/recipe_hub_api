@@ -2,15 +2,11 @@ RSpec.describe 'GET/api/recipes/:id', type: :request do
   describe 'successfully' do
     let!(:ingredient1) do
       create(:ingredient, {
-               "amount": 100,
-               "unit": 'grams',
                "name": 'sugar'
              })
     end
     let!(:ingredient2) do
       create(:ingredient, {
-               "amount": 400,
-               "unit": 'ml',
                "name": 'milk'
              })
     end
@@ -19,11 +15,15 @@ RSpec.describe 'GET/api/recipes/:id', type: :request do
       create(
         :recipe,
         title: 'Pancakes',
-        ingredients: [ingredient1, ingredient2],
         instructions: 'mix it together'
       )
     end
 
+    let!(:ingredients_recipe) do
+      create(:ingredients_recipe,
+             recipe: recipe,
+             ingredient: ingredient1)
+    end
     before do
       get "/api/recipes/#{recipe.id}"
     end
@@ -38,8 +38,8 @@ RSpec.describe 'GET/api/recipes/:id', type: :request do
 
     it 'is expected to return the requested recipes ingredients' do
       expect(response_json['recipe']['ingredients']).to eq [{
-        'amount' => 100, 'unit' => 'grams', 'name' => 'sugar'
-      }, { 'amount' => 400, 'name' => 'milk', 'unit' => 'ml' }]
+        'amount' => 200.0, 'ingredient_id' => ingredient1.id, 'recipe_id' => recipe.id, 'unit' => 'grams'
+      }]
     end
   end
 

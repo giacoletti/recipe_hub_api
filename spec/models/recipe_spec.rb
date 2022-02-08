@@ -11,11 +11,11 @@ RSpec.describe Recipe, type: :model do
 
   describe 'Associations' do
     # it { is_expected.to have_many(:ingredients) }
-    it { should have_and_belong_to_many(:ingredients) }
+    it { should have_many(:ingredients) }
   end
 
   describe 'Factory' do
-    it 'is expected to have be valid' do
+    it 'is expected to have a valid factory' do
       expect(create(:recipe)).to be_valid
     end
   end

@@ -8,7 +8,7 @@ RSpec.describe 'GET /api/recipes', type: :request do
 
     it { is_expected.to have_http_status :ok }
 
-    it 'is expected to return 30 articles' do
+    it 'is expected to return 30 recipes' do
       expect(response_json['recipes'].count).to eq 30
     end
 
