@@ -2,11 +2,11 @@ RSpec.describe 'GET/api/recipes/:id', type: :request do
   describe 'successfully' do
     let!(:ingredient1) {  create(:ingredient, { name: 'sugar' }) }
     let!(:ingredient2) { create(:ingredient, { name: 'milk' }) }
-    let!(:recipe) { create(:recipe, title: 'Pancakes', instructions: 'mix it together') }
+    let!(:recipe) { create(:recipe, name: 'Pancakes', instructions: 'Mix it together') }
 
     let!(:ingredients_recipe) do
       create(:ingredients_recipe, recipe: recipe, ingredient: ingredient1)
-      create(:ingredients_recipe, recipe: recipe, ingredient: ingredient2)
+      create(:ingredients_recipe, recipe: recipe, ingredient: ingredient2, amount: 6, unit: 'dl')
     end
 
     before do
@@ -17,14 +17,18 @@ RSpec.describe 'GET/api/recipes/:id', type: :request do
       expect(response).to have_http_status 200
     end
 
-    it 'is expected to return the requested recipes title' do
-      expect(response_json['recipe']['title']).to eq 'Pancakes'
+    it 'is expected to return the requested recipe name' do
+      expect(response_json['recipe']['name']).to eq 'Pancakes'
     end
 
-    it 'is expected to return the requested recipes ingredients' do
-      expect(response_json['recipe']['ingredients']).to eq [{
-        'amount' => 200.0, 'ingredient_id' => ingredient1.id, 'recipe_id' => recipe.id, 'unit' => 'grams'
-      }]
+    it 'is expected to return the requested recipe instructions' do
+      expect(response_json['recipe']['instructions']).to eq 'Mix it together'
+    end
+
+    it 'is expected to return the requested recipe ingredients' do
+      expected_response = [{ 'name' => 'sugar', 'amount' => 200.0, 'unit' => 'grams' },
+                           { 'name' => 'milk', 'amount' => 6.0, 'unit' => 'dl' }]
+      expect(response_json['recipe']['ingredients']).to eq expected_response
     end
   end
 
