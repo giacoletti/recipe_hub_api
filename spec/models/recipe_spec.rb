@@ -9,6 +9,10 @@ RSpec.describe Recipe, type: :model do
     it { is_expected.to validate_presence_of :instructions }
   end
 
+  describe 'Associations' do
+    it { is_expected.to have_many(:ingredients) }
+  end
+
   describe 'Factory' do
     it 'is expected to have be valid' do
       expect(create(:recipe)).to be_valid
