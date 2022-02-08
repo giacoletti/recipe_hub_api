@@ -10,7 +10,8 @@ RSpec.describe Recipe, type: :model do
   end
 
   describe 'Associations' do
-    it { is_expected.to have_many(:ingredients) }
+    # it { is_expected.to have_many(:ingredients) }
+    it { should have_and_belong_to_many(:ingredients) }
   end
 
   describe 'Factory' do
