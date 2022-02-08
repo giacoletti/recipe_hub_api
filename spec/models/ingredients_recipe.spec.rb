@@ -1,6 +1,7 @@
-RSpec.describe Ingredients_recipe, type: :model do
+RSpec.describe IngredientsRecipe, type: :model do
   describe 'Database table' do
-    it { is_expected.to have_db_column(:name).of_type(:string) }
+    it { is_expected.to have_db_column(:unit).of_type(:string) }
+    it { is_expected.to have_db_column(:amount).of_type(:float) }
   end
 
   describe 'Validations' do
@@ -9,8 +10,8 @@ RSpec.describe Ingredients_recipe, type: :model do
   end
 
   describe 'Associations' do
-    it { is_expected.to belongs_to(:ingredients) }
-    it { is_expected.to belongs_to(:recipes) }
+    it { is_expected.to belong_to(:ingredient) }
+    it { is_expected.to belong_to(:recipe) }
   end
 
   describe 'Factory' do
