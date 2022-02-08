@@ -1,29 +1,14 @@
 RSpec.describe 'GET/api/recipes/:id', type: :request do
   describe 'successfully' do
-    let!(:ingredient1) do
-      create(:ingredient, {
-               "name": 'sugar'
-             })
-    end
-    let!(:ingredient2) do
-      create(:ingredient, {
-               "name": 'milk'
-             })
-    end
-
-    let!(:recipe) do
-      create(
-        :recipe,
-        title: 'Pancakes',
-        instructions: 'mix it together'
-      )
-    end
+    let!(:ingredient1) {  create(:ingredient, { name: 'sugar' }) }
+    let!(:ingredient2) { create(:ingredient, { name: 'milk' }) }
+    let!(:recipe) { create(:recipe, title: 'Pancakes', instructions: 'mix it together') }
 
     let!(:ingredients_recipe) do
-      create(:ingredients_recipe,
-             recipe: recipe,
-             ingredient: ingredient1)
+      create(:ingredients_recipe, recipe: recipe, ingredient: ingredient1)
+      create(:ingredients_recipe, recipe: recipe, ingredient: ingredient2)
     end
+
     before do
       get "/api/recipes/#{recipe.id}"
     end
