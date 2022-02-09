@@ -11,7 +11,17 @@ class Api::RecipesController < ApplicationController
     render_error('Recipe not found', 404)
   end
 
+  def update
+    recipe = Recipe.find(params[:id])
+    recipe.update(recipe_params)
+    render json: { message: 'Your recipe was updated.' }
+  end
+
   private
+
+  def recipe_params
+    params[:recipe].permit(:name, :instructions)
+  end
 
   def render_error(message, status)
     render json: { message: message }, status: status
