@@ -12,7 +12,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
             name: 'Fried rice with kimchi',
             instructions: 'Mix and shake it',
             ingredients: { name: 'sugar', unit: 'gram', amount: '200' },
-            user: user.email
+            user: user.uid
           }
         }, headers: credentials
         @recipe = Recipe.last
@@ -29,6 +29,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
       end
 
       it 'is expected to respond with a confirmation message' do
+        binding.pry
         expect(response_json['message']).to eq 'Your recipe is created for you!'
       end
     end
