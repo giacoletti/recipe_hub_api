@@ -1,5 +1,5 @@
 class Api::RecipesController < ApplicationController
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!
 
   def index
     recipes = Recipe.by_recently_created.limit(30)
