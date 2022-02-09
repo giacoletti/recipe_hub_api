@@ -1,4 +1,6 @@
 class Api::RecipesController < ApplicationController
+  before_action :authenticate_user!, only: [:create]
+
   def index
     recipes = Recipe.by_recently_created.limit(30)
     render json: recipes, each_serializer: Recipe::IndexSerializer
