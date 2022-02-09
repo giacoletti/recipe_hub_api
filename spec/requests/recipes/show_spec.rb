@@ -5,8 +5,8 @@ RSpec.describe 'GET/api/recipes/:id', type: :request do
     let!(:recipe) { create(:recipe, name: 'Pancakes', instructions: 'Mix it together') }
 
     let!(:ingredients_recipe) do
-      create(:ingredients_recipe, recipe: recipe, ingredient: ingredient1)
-      create(:ingredients_recipe, recipe: recipe, ingredient: ingredient2, amount: 6, unit: 'dl')
+      create(:recipe_ingredient, recipe: recipe, ingredient: ingredient1)
+      create(:recipe_ingredient, recipe: recipe, ingredient: ingredient2, amount: 6, unit: 'dl')
     end
 
     before do

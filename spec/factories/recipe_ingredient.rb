@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :ingredients_recipe do
+  factory :recipe_ingredient do
     ingredient
     recipe
     unit { 'grams' }

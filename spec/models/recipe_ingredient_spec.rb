@@ -1,4 +1,4 @@
-RSpec.describe IngredientsRecipe, type: :model do
+RSpec.describe RecipeIngredient, type: :model do
   describe 'Database table' do
     it { is_expected.to have_db_column(:unit).of_type(:string) }
     it { is_expected.to have_db_column(:amount).of_type(:float) }
@@ -16,7 +16,7 @@ RSpec.describe IngredientsRecipe, type: :model do
 
   describe 'Factory' do
     it 'is expected to have a valid factory' do
-      expect(create(:ingredients_recipe)).to be_valid
+      expect(create(:recipe_ingredient)).to be_valid
     end
   end
 end

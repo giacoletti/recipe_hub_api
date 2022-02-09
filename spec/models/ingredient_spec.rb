@@ -8,7 +8,7 @@ RSpec.describe Ingredient, type: :model do
   end
 
   describe 'Associations' do
-    it { is_expected.to have_many(:ingredients_recipes) }
+    it { is_expected.to have_many(:recipe_ingredients) }
     it { is_expected.to have_many(:recipes) }
   end
 
