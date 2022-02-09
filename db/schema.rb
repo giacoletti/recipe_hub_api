@@ -21,8 +21,15 @@ ActiveRecord::Schema.define(version: 2022_02_08_200940) do
     t.string "unit"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "ingredients_recipes", id: false, force: :cascade do |t|
+    t.bigint "ingredient_id", null: false
     t.bigint "recipe_id", null: false
-    t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
+    t.float "amount"
+    t.string "unit"
+    t.index ["ingredient_id", "recipe_id"], name: "index_ingredients_recipes_on_ingredient_id_and_recipe_id"
+    t.index ["recipe_id", "ingredient_id"], name: "index_ingredients_recipes_on_recipe_id_and_ingredient_id"
   end
 
   create_table "ingredients_recipes", id: false, force: :cascade do |t|
@@ -33,7 +40,7 @@ ActiveRecord::Schema.define(version: 2022_02_08_200940) do
   end
 
   create_table "recipes", force: :cascade do |t|
-    t.string "title"
+    t.string "name"
     t.text "instructions"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

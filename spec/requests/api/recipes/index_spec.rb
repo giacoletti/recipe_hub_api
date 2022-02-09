@@ -8,12 +8,12 @@ RSpec.describe 'GET /api/recipes', type: :request do
 
     it { is_expected.to have_http_status :ok }
 
-    it 'is expected to return 30 articles' do
+    it 'is expected to return 30 recipes' do
       expect(response_json['recipes'].count).to eq 30
     end
 
-    it 'is expected to respond the title of first recipe' do
-      expect(response_json['recipes'].first['title']).to eq 'Fried rice with kimchi'
+    it 'is expected to respond the name of first recipe' do
+      expect(response_json['recipes'].first['name']).to eq 'Fried rice with kimchi'
     end
 
     it 'is expected to respond the with right instructions' do
