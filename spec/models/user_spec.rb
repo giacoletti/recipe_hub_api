@@ -8,6 +8,7 @@ RSpec.describe User, type: :model do
   end
   describe 'Validations' do
     it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_presence_of :email }
   end
   describe 'Factory' do
     it 'is expected to have a valid factory' do
