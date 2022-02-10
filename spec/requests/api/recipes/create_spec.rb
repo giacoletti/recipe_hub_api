@@ -3,6 +3,8 @@ RSpec.describe 'POST /api/recipes', type: :request do
 
   let(:user) { create(:user) }
   let(:credentials) { user.create_new_auth_token }
+  let!(:rice) { create(:ingredient, name: 'Rice') }
+  let!(:kimchi) { create(:ingredient, name: 'Kimchi') }
 
   describe 'as an authenticated user' do
     describe 'successfully' do
@@ -11,28 +13,36 @@ RSpec.describe 'POST /api/recipes', type: :request do
           recipe: {
             name: 'Fried rice with kimchi',
             instructions: 'Mix and shake it',
-            ingredients: { name: 'Bacon', unit: 'gram', amount: '2000' }
+            ingredients_attributes: [
+              { ingredient_id: rice.id, unit: 'gram', amount: '2000' },
+              { ingredient_id: kimchi.id, unit: 'gram', amount: '2000' }
+            ]
           }
         }, headers: credentials
         @recipe = Recipe.last
       end
 
-      it { is_expected.to have_http_status :created }
+      it {is_expected.to have_http_status :created }
 
       it 'is expected to create an instance of a Recipe' do
         expect(@recipe).to_not eq nil
       end
-      
+
       it 'is expected to have saved the recipe in the database' do
         expect(@recipe.name).to eq 'Fried rice with kimchi'
       end
-      
+
       it 'is expected to respond with a confirmation message' do
         expect(response_json['message']).to eq 'Your recipe has been created'
       end
 
       it 'is expected to have saved the recipe with the user associated' do
         expect(@recipe.user.name).to eq user.name
+      end
+
+      it 'is expected to associate recipe with ingredients' do
+        # binding.pry;
+        expect(@recipe.ingredients.size).to eq 2
       end
     end
 
