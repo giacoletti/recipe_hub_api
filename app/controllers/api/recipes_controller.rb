@@ -5,7 +5,12 @@ class Api::RecipesController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :render_404_error
 
   def index
-    recipes = Recipe.by_recently_created.limit(30)
+    recipes = if params.include?(:user)
+                user = User.where email: params[:user]
+                Recipe.where(user: user).by_recently_created.limit(30)
+              else
+                Recipe.by_recently_created.limit(30)
+              end
     render json: recipes, each_serializer: Recipe::IndexSerializer
   end
 
@@ -30,9 +35,7 @@ class Api::RecipesController < ApplicationController
   private
 
   def validate_params_presence
-    if params[:recipe].nil?
-      render_error('Recipe is missing', :unprocessable_entity)
-    end
+    render_error('Recipe is missing', :unprocessable_entity) if params[:recipe].nil?
   end
 
   def find_recipe
