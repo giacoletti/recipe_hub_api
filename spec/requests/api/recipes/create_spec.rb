@@ -11,7 +11,9 @@ RSpec.describe 'POST /api/recipes', type: :request do
           recipe: {
             name: 'Fried rice with kimchi',
             instructions: 'Mix and shake it',
-            ingredients: { name: 'sugar', unit: 'gram', amount: '200' }
+            ingredients: [{ name: 'Bacon', unit: 'gram', amount: '2000' },
+                          { name: 'Cream', unit: 'gram', amount: '1500' },
+                          { name: 'pasta', unit: 'gram', amount: '200' }]
           }
         }, headers: credentials
         @recipe = Recipe.last
@@ -30,17 +32,20 @@ RSpec.describe 'POST /api/recipes', type: :request do
       it 'is expected to respond with a confirmation message' do
         expect(response_json['message']).to eq 'Your recipe has been created'
       end
+
+      it 'is expected to save recipe ingredients' do
+        expect(@recipe.ingredients).to_not eq nil
+      end
     end
 
     describe 'unsuccessfully' do
       describe 'due to missing params' do
-        
         before do
           post '/api/recipes', params: {}, headers: credentials
         end
-        
+
         it { is_expected.to have_http_status :unprocessable_entity }
-        
+
         it 'is expected to respond with an error message' do
           expect(response_json['message']).to eq 'Missing params'
         end
@@ -51,11 +56,13 @@ RSpec.describe 'POST /api/recipes', type: :request do
           post '/api/recipes', params: {
             recipe: {
               instructions: 'Mix and shake it',
-              ingredients: { name: 'sugar', unit: 'gram', amount: '200' }
+              ingredients: [{ name: 'Bacon', unit: 'gram', amount: '2000' },
+                            { name: 'Cream', unit: 'gram', amount: '1500' },
+                            { name: 'pasta', unit: 'gram', amount: '200' }]
             }
           }, headers: credentials
         end
-        
+
         it { is_expected.to have_http_status :unprocessable_entity }
 
         it 'is expected to respond with an error message' do
@@ -68,17 +75,39 @@ RSpec.describe 'POST /api/recipes', type: :request do
           post '/api/recipes', params: {
             recipe: {
               name: 'Spaghetti bolognese',
-              ingredients: { name: 'minced meat', unit: 'gram', amount: '200' }
+              ingredients: [{ name: 'Bacon', unit: 'gram', amount: '2000' },
+                            { name: 'Cream', unit: 'gram', amount: '1500' },
+                            { name: 'pasta', unit: 'gram', amount: '200' }]
             }
           }, headers: credentials
         end
-        
+
         it { is_expected.to have_http_status :unprocessable_entity }
 
         it 'is expected to respond with an error message' do
           expect(response_json['message']).to eq 'Your recipe must have instructions'
         end
       end
+    end
+  end
+
+  describe 'as anonymous user' do
+    before do
+      post '/api/recipes', params: {
+        recipe: {
+          name: 'Pasta Carbonara',
+          instructions: 'Mix and shake it',
+          ingredients: [{ name: 'Bacon', unit: 'gram', amount: '2000' },
+                        { name: 'Cream', unit: 'gram', amount: '1500' },
+                        { name: 'pasta', unit: 'gram', amount: '200' }]
+        }
+      }, headers: nil
+    end
+
+    it { is_expected.to have_http_status :unauthorized }
+
+    it 'is expected to respond with an error message' do
+      expect(response_json['errors'].first).to eq 'You need to sign in or sign up before continuing.'
     end
   end
 end
