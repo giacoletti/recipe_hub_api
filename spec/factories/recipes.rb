@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :recipe do
-    name { 'Fried rice with kimchi' }
-    instructions { 'Mix everything' }
+    name { Faker::Food.dish }
+    instructions { Faker::Food.description }
     user 
   end
 end
