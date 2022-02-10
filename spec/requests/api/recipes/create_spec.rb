@@ -22,7 +22,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
         @recipe = Recipe.last
       end
 
-      it {is_expected.to have_http_status :created }
+      it { is_expected.to have_http_status :created }
 
       it 'is expected to create an instance of a Recipe' do
         expect(@recipe).to_not eq nil
@@ -64,7 +64,9 @@ RSpec.describe 'POST /api/recipes', type: :request do
           post '/api/recipes', params: {
             recipe: {
               instructions: 'Mix and shake it',
-              ingredients: { name: 'Bacon', unit: 'gram', amount: '2000' }
+              ingredients_attributes: [
+                { ingredient_id: rice.id, unit: 'gram', amount: '2000' }
+              ]
             }
           }, headers: credentials
         end
@@ -72,7 +74,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
         it { is_expected.to have_http_status :unprocessable_entity }
 
         it 'is expected to respond with an error message' do
-          expect(response_json['message']).to eq 'Your recipe must have a name'
+          expect(response_json['message']).to eq "Name can't be blank"
         end
       end
 
@@ -81,7 +83,9 @@ RSpec.describe 'POST /api/recipes', type: :request do
           post '/api/recipes', params: {
             recipe: {
               name: 'Spaghetti bolognese',
-              ingredients: { name: 'Bacon', unit: 'gram', amount: '2000' }
+              ingredients_attributes: [
+                { ingredient_id: rice.id, unit: 'gram', amount: '2000' }
+              ]
             }
           }, headers: credentials
         end
@@ -89,7 +93,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
         it { is_expected.to have_http_status :unprocessable_entity }
 
         it 'is expected to respond with an error message' do
-          expect(response_json['message']).to eq 'Your recipe must have instructions'
+          expect(response_json['message']).to eq "Instructions can't be blank"
         end
       end
     end
@@ -101,7 +105,9 @@ RSpec.describe 'POST /api/recipes', type: :request do
         recipe: {
           name: 'Pasta Carbonara',
           instructions: 'Mix and shake it',
-          ingredients: { name: 'Bacon', unit: 'gram', amount: '2000' }
+          ingredients_attributes: [
+            { ingredient_id: rice.id, unit: 'gram', amount: '2000' }
+          ]
         }
       }, headers: nil
     end
