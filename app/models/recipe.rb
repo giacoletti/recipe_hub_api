@@ -10,8 +10,8 @@ class Recipe < ApplicationRecord
     if Rails.env.test?
       ActiveStorage::Blob.service.path_for(image.key)
     else
-      image.service_url(expires_in: 1.hour,
-                        disposition: 'inline')
+      image.url(expires_in: 1.hour,
+                disposition: 'inline')
     end
   end
 end
