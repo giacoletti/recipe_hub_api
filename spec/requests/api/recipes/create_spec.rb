@@ -41,7 +41,6 @@ RSpec.describe 'POST /api/recipes', type: :request do
       end
 
       it 'is expected to associate recipe with ingredients' do
-        # binding.pry;
         expect(@recipe.ingredients.size).to eq 2
       end
     end
