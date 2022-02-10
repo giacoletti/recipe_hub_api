@@ -11,8 +11,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
           recipe: {
             name: 'Fried rice with kimchi',
             instructions: 'Mix and shake it',
-            ingredients: { name: 'sugar', unit: 'gram', amount: '200' },
-            user: user.uid
+            ingredients: { name: 'sugar', unit: 'gram', amount: '200' }
           }
         }, headers: credentials
         @recipe = Recipe.last
