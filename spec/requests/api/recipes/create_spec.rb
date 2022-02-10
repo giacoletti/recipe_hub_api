@@ -11,9 +11,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
           recipe: {
             name: 'Fried rice with kimchi',
             instructions: 'Mix and shake it',
-            ingredients: [{ name: 'Bacon', unit: 'gram', amount: '2000' },
-                          { name: 'Cream', unit: 'gram', amount: '1500' },
-                          { name: 'pasta', unit: 'gram', amount: '200' }]
+            ingredients: { name: 'Bacon', unit: 'gram', amount: '2000' }
           }
         }, headers: credentials
         @recipe = Recipe.last
@@ -24,17 +22,18 @@ RSpec.describe 'POST /api/recipes', type: :request do
       it 'is expected to create an instance of a Recipe' do
         expect(@recipe).to_not eq nil
       end
-
+      
       it 'is expected to have saved the recipe in the database' do
         expect(@recipe.name).to eq 'Fried rice with kimchi'
       end
-
+      
       it 'is expected to respond with a confirmation message' do
         expect(response_json['message']).to eq 'Your recipe has been created'
       end
-
+      
       it 'is expected to save recipe ingredients' do
-        expect(@recipe.ingredients).to_not eq nil
+        expect(@recipe.ingredients.length).to_not eq nil
+        binding.pry
       end
     end
 
@@ -56,9 +55,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
           post '/api/recipes', params: {
             recipe: {
               instructions: 'Mix and shake it',
-              ingredients: [{ name: 'Bacon', unit: 'gram', amount: '2000' },
-                            { name: 'Cream', unit: 'gram', amount: '1500' },
-                            { name: 'pasta', unit: 'gram', amount: '200' }]
+              ingredients: { name: 'Bacon', unit: 'gram', amount: '2000' }
             }
           }, headers: credentials
         end
@@ -75,9 +72,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
           post '/api/recipes', params: {
             recipe: {
               name: 'Spaghetti bolognese',
-              ingredients: [{ name: 'Bacon', unit: 'gram', amount: '2000' },
-                            { name: 'Cream', unit: 'gram', amount: '1500' },
-                            { name: 'pasta', unit: 'gram', amount: '200' }]
+              ingredients: { name: 'Bacon', unit: 'gram', amount: '2000' }
             }
           }, headers: credentials
         end
@@ -97,9 +92,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
         recipe: {
           name: 'Pasta Carbonara',
           instructions: 'Mix and shake it',
-          ingredients: [{ name: 'Bacon', unit: 'gram', amount: '2000' },
-                        { name: 'Cream', unit: 'gram', amount: '1500' },
-                        { name: 'pasta', unit: 'gram', amount: '200' }]
+          ingredients: { name: 'Bacon', unit: 'gram', amount: '2000' }
         }
       }, headers: nil
     end
