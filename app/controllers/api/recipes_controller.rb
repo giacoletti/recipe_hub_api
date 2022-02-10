@@ -1,5 +1,6 @@
 class Api::RecipesController < ApplicationController
   before_action :authenticate_user!, only: [:create]
+  before_action :validate_params_presence, only: [:create]
   before_action :find_recipe, only: %i[show update]
   rescue_from ActiveRecord::RecordNotFound, with: :render_404_error
 
@@ -20,13 +21,23 @@ class Api::RecipesController < ApplicationController
   def create
     recipe = current_user.recipes.create(recipe_params)
     if recipe.persisted?
-      render json: { recipe: recipe, message: 'Your recipe is created for you!' }, status: 201
+      render json: { recipe: recipe, message: 'Your recipe has been created' }, status: 201
     else
       render_error(recipe.errors.full_messages.to_sentence, 422)
     end
   end
 
   private
+
+  def validate_params_presence
+    if params[:recipe].nil?
+      render_error('Missing params', :unprocessable_entity)
+    elsif params[:recipe][:name].nil?
+      render_error('Your recipe must have a name', :unprocessable_entity)
+    elsif params[:recipe][:instructions].nil?
+      render_error('Your recipe must have instructions', :unprocessable_entity)
+    end
+  end
 
   def find_recipe
     @recipe = Recipe.find(params[:id])

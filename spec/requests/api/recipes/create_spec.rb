@@ -28,7 +28,56 @@ RSpec.describe 'POST /api/recipes', type: :request do
       end
 
       it 'is expected to respond with a confirmation message' do
-        expect(response_json['message']).to eq 'Your recipe is created for you!'
+        expect(response_json['message']).to eq 'Your recipe has been created'
+      end
+    end
+
+    describe 'unsuccessfully' do
+      describe 'due to missing params' do
+        
+        before do
+          post '/api/recipes', params: {}, headers: credentials
+        end
+        
+        it { is_expected.to have_http_status :unprocessable_entity }
+        
+        it 'is expected to respond with an error message' do
+          expect(response_json['message']).to eq 'Missing params'
+        end
+      end
+
+      describe 'due to missing recipe name' do
+        before do
+          post '/api/recipes', params: {
+            recipe: {
+              instructions: 'Mix and shake it',
+              ingredients: { name: 'sugar', unit: 'gram', amount: '200' }
+            }
+          }, headers: credentials
+        end
+        
+        it { is_expected.to have_http_status :unprocessable_entity }
+
+        it 'is expected to respond with an error message' do
+          expect(response_json['message']).to eq 'Your recipe must have a name'
+        end
+      end
+
+      describe 'due to missing recipe instructions' do
+        before do
+          post '/api/recipes', params: {
+            recipe: {
+              name: 'Spaghetti bolognese',
+              ingredients: { name: 'minced meat', unit: 'gram', amount: '200' }
+            }
+          }, headers: credentials
+        end
+        
+        it { is_expected.to have_http_status :unprocessable_entity }
+
+        it 'is expected to respond with an error message' do
+          expect(response_json['message']).to eq 'Your recipe must have instructions'
+        end
       end
     end
   end
