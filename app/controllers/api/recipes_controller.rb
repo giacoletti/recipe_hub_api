@@ -1,5 +1,7 @@
 class Api::RecipesController < ApplicationController
-  before_action :find_recipe, only: [:show, :update]
+  before_action :authenticate_user!, only: [:create]
+  before_action :validate_params_presence, only: [:create]
+  before_action :find_recipe, only: %i[show update]
   rescue_from ActiveRecord::RecordNotFound, with: :render_404_error
 
   def index
@@ -15,20 +17,37 @@ class Api::RecipesController < ApplicationController
     @recipe.update(recipe_params)
     render json: { message: 'Your recipe was updated.' }
   end
-  
+
+  def create
+    recipe = current_user.recipes.create(recipe_params)
+    if recipe.persisted?
+      render json: { recipe: recipe, message: 'Your recipe has been created' }, status: 201
+    else
+      render_error(recipe.errors.full_messages.to_sentence, 422)
+    end
+  end
 
   private
+
+  def validate_params_presence
+    if params[:recipe].nil?
+      render_error('Recipe is missing', :unprocessable_entity)
+    end
+  end
+
   def find_recipe
     @recipe = Recipe.find(params[:id])
   end
 
   def recipe_params
-    params[:recipe].permit(:name, :instructions)
+    params[:recipe].permit(:name, :instructions, ingredients_attributes: %i[ingredient_id unit amount])
+  end
+
+  def render_error(message, status)
+    render json: { message: message }, status: status
   end
 
   def render_404_error
     render json: { message: 'Recipe not found' }, status: 404
   end
-
-  
 end
