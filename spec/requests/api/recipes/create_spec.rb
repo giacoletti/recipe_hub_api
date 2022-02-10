@@ -1,7 +1,7 @@
 RSpec.describe 'POST /api/recipes', type: :request do
   subject { response }
 
-  let!(:user) { create(:user) }
+  let(:user) { create(:user) }
   let(:credentials) { user.create_new_auth_token }
 
   describe 'as an authenticated user' do
@@ -30,10 +30,9 @@ RSpec.describe 'POST /api/recipes', type: :request do
       it 'is expected to respond with a confirmation message' do
         expect(response_json['message']).to eq 'Your recipe has been created'
       end
-      
-      it 'is expected to save recipe ingredients' do
-        expect(@recipe.ingredients.length).to_not eq nil
-        binding.pry
+
+      it 'is expected to have saved the recipe with the user associated' do
+        expect(@recipe.user.name).to eq user.name
       end
     end
 
@@ -46,7 +45,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
         it { is_expected.to have_http_status :unprocessable_entity }
 
         it 'is expected to respond with an error message' do
-          expect(response_json['message']).to eq 'Missing params'
+          expect(response_json['message']).to eq 'Recipe is missing'
         end
       end
 

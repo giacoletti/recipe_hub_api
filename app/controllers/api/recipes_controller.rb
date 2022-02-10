@@ -31,7 +31,7 @@ class Api::RecipesController < ApplicationController
 
   def validate_params_presence
     if params[:recipe].nil?
-      render_error('Missing params', :unprocessable_entity)
+      render_error('Recipe is missing', :unprocessable_entity)
     elsif params[:recipe][:name].nil?
       render_error('Your recipe must have a name', :unprocessable_entity)
     elsif params[:recipe][:instructions].nil?
@@ -44,7 +44,7 @@ class Api::RecipesController < ApplicationController
   end
 
   def recipe_params
-    params[:recipe].permit(:name, :instructions)
+    params[:recipe].permit(:name, :instructions, :ingredients)
   end
 
   def render_error(message, status)
