@@ -33,7 +33,11 @@ class Api::RecipesController < ApplicationController
   end
 
   def destroy
-    Recipe.delete_by(id: params[:id])
+    if Recipe.delete_by(id: params[:id]) == 1
+      render json: { message: 'Your recipe has been deleted!' }, status: 202
+    else
+      render_error('The recipe cannot be found', :not_found)
+    end
   end
 
   private
