@@ -1,5 +1,5 @@
 class Api::RecipesController < ApplicationController
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, only: %i[create destroy]
   before_action :validate_params_presence, only: [:create]
   before_action :find_recipe, only: %i[show update]
   rescue_from ActiveRecord::RecordNotFound, with: :render_404_error
@@ -30,6 +30,10 @@ class Api::RecipesController < ApplicationController
     else
       render_error(recipe.errors.full_messages.to_sentence, 422)
     end
+  end
+
+  def destroy
+    Recipe.delete_by(id: params[:id])
   end
 
   private

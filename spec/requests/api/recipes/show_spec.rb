@@ -1,4 +1,4 @@
-RSpec.describe 'GET/api/recipes/:id', type: :request do
+RSpec.describe 'GET /api/recipes/:id', type: :request do
   describe 'successfully' do
     let!(:ingredient1) {  create(:ingredient, { name: 'sugar' }) }
     let!(:ingredient2) { create(:ingredient, { name: 'milk' }) }
