@@ -30,7 +30,7 @@ RSpec.describe 'DELETE /api/recipes/:id', type: :request do
       it { is_expected.to have_http_status :not_found }
 
       it 'is expected to respond with an error message' do
-        expect(response_json['message']).to eq 'The recipe cannot be found'
+        expect(response_json['message']).to eq 'Recipe not found'
       end
     end
     
