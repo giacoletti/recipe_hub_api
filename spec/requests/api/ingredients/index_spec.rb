@@ -1,9 +1,7 @@
 RSpec.describe 'GET /api/ingredients', type: :request do
   subject { response }
 
-  let!(:spaghetti) { create(:ingredient, name: 'Spaghetti') }
-  let!(:egg) { create(:ingredient, name: 'Egg') }
-  let!(:flour) { create(:ingredient, name: 'Flour') }
+  let!(:ingredients) { create_list(:ingredient, 20) }
 
   describe 'successfully' do
     before do
@@ -12,14 +10,12 @@ RSpec.describe 'GET /api/ingredients', type: :request do
 
     it { is_expected.to have_http_status :ok }
 
-    it 'is expected to respond with a collection of 3 ingredients' do
-      expect(response_json['ingredients'].length).to eq 3
+    it 'is expected to respond with a collection of 20 ingredients' do
+      expect(response_json['ingredients'].count).to eq 20
     end
 
-    it 'is expected to respond with Spaghetti ingredient' do
-      expect(response_json['ingredients'].select do |ingredient|
-               ingredient['name'] == spaghetti.name
-             end).to eq [{ 'id' => spaghetti.id, 'name' => spaghetti.name }]
+    it 'is expected to respond with ingredients names' do
+      expect(response_json['ingredients'].first['name']).to_not eq nil
     end
   end
 end
