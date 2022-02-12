@@ -1,5 +1,5 @@
 RSpec.describe Ingredient::IndexSerializer, type: :serializer do
-  let(:ingredients) { create_list(:ingredient, 20) }
+  let(:ingredients) { create_list(:ingredient, 1) }
 
   let(:serialization) do
     ActiveModelSerializers::SerializableResource.new(
