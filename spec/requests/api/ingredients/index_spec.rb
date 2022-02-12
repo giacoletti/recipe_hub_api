@@ -1,7 +1,7 @@
 RSpec.describe 'GET /api/ingredients', type: :request do
   subject { response }
 
-  let!(:ingredients) { create_list(:ingredient, 20) }
+  let!(:ingredient) { create(:ingredient) }
 
   describe 'successfully' do
     before do
@@ -10,12 +10,8 @@ RSpec.describe 'GET /api/ingredients', type: :request do
 
     it { is_expected.to have_http_status :ok }
 
-    it 'is expected to respond with a collection of 20 ingredients' do
-      expect(response_json['ingredients'].count).to eq 20
-    end
-
-    it 'is expected to respond with ingredients names' do
-      expect(response_json['ingredients'].first['name']).to_not eq nil
+    it 'is expected to respond with a collection of 1 ingredient' do
+      expect(response_json['ingredients'].count).to eq 1
     end
   end
 end
