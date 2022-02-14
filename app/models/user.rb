@@ -8,4 +8,10 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name
   has_many :recipes
+
+  after_create :send_notification
+  
+  def send_notification
+    ActionCable.server.broadcast("NotificationsChannel", { message: "A new user has been created!" })
+  end
 end
