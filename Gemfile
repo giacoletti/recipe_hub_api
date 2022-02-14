@@ -11,6 +11,7 @@ gem 'rack-cors'
 gem 'rails', '~> 6.1.4', '>= 6.1.4.4'
 gem 'devise_token_auth'
 gem 'aws-sdk-s3', require: false
+gem 'redis'
 
 group :development, :test do
   gem 'factory_bot_rails'

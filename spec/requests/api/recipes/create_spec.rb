@@ -1,10 +1,32 @@
 RSpec.describe 'POST /api/recipes', type: :request do
   subject { response }
 
-  let(:user) { create(:user) }
+  let(:user) { create(:user, name: 'Elvita') }
   let(:credentials) { user.create_new_auth_token }
   let!(:rice) { create(:ingredient, name: 'Rice') }
   let!(:kimchi) { create(:ingredient, name: 'Kimchi') }
+
+  before { ActionCable.server.restart }
+  # describe 'notifications' do
+  #   before do
+  #     ActionCable.server.restart
+  #     post '/api/recipes', params: {
+  #       recipe: {
+  #         name: 'Fried rice with kimchi',
+  #         instructions: 'Mix and shake it',
+  #         ingredients_attributes: [
+  #           { ingredient_id: rice.id, unit: 'gram', amount: '2000' },
+  #           { ingredient_id: kimchi.id, unit: 'gram', amount: '2000' }
+  #         ]
+  #       }
+  #     }, headers: credentials
+  #   end
+
+  #   it 'is expected to send out a notification message using ActionCable' do
+  #     expect(JSON.parse(channels['notifications_channel'].first))
+  #       .to eq({ 'message' => 'Elvita created a new Fried rice with kimchi recipe.' })
+  #   end
+  # end
 
   describe 'as an authenticated user' do
     describe 'successfully' do
@@ -26,6 +48,11 @@ RSpec.describe 'POST /api/recipes', type: :request do
 
       it 'is expected to create an instance of a Recipe' do
         expect(@recipe).to_not eq nil
+      end
+
+      it 'is expected to send out a notification message using ActionCable' do
+        expect(JSON.parse(channels['notifications_channel'].first))
+          .to eq({ 'message' => 'Elvita created a new Fried rice with kimchi recipe.' })
       end
 
       it 'is expected to have saved the recipe in the database' do

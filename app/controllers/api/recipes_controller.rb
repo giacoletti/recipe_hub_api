@@ -26,6 +26,9 @@ class Api::RecipesController < ApplicationController
   def create
     recipe = current_user.recipes.create(recipe_params)
     if recipe.persisted?
+      # message = { message: "#{current_user.name} created a new #{recipe.name} recipe." }
+      # ActionCable.server.broadcast('notifications_channel', message)
+      NotificationsService.notify('notifications_channel', recipe)
       render json: { recipe: recipe, message: 'Your recipe has been created' }, status: 201
     else
       render_error(recipe.errors.full_messages.to_sentence, 422)

@@ -1,5 +1,10 @@
-development:
-  adapter: async
+# development:
+#   adapter: async
+redis: &redis
+  adapter: redis
+  url: redis://localhost:6379/1
+
+development: &redis
 
 test:
   adapter: test
