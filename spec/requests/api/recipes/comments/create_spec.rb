@@ -24,7 +24,35 @@ RSpec.describe 'POST /api/recipes/:id/comments', type: :request do
       end
 
       it 'is expected to respond with the saved comment' do
-        expect(response_json['comment']['body']).to_eq 'Awesome recipe'
+        expect(response_json['comment']['body']).to eq 'Awesome recipe'
+      end
+    end
+
+    describe 'unsuccessfully' do
+      describe 'due to invalid recipe id' do
+        before do
+          post '/api/recipes/pinaples/comments',
+               params: { comment: { body: 'Awesome recipe' } }, headers: credentials
+        end
+
+        it { is_expected.to have_http_status :not_found }
+
+        it 'is expected to respond with an error message' do
+          expect(response_json['message']).to eq 'Recipe not found'
+        end
+      end
+
+      describe 'due to missing params' do
+        before do
+          post "/api/recipes/#{recipe.id}/comments",
+               params: {}, headers: credentials
+        end
+
+        it { is_expected.to have_http_status :unprocessable_entity }
+
+        it 'is expected to respond with an error message' do
+          expect(response_json['message']).to eq 'Comment is missing'
+        end
       end
     end
   end
