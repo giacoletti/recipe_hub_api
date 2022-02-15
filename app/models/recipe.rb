@@ -25,6 +25,7 @@ class Recipe < ApplicationRecord
                                          unit: ingredient.unit)
       end
     end
+    update(forks_count: forks_count + 1)
     forked_recipe
   end
 end
