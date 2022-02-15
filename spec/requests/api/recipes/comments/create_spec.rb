@@ -9,7 +9,7 @@ RSpec.describe 'POST /api/recipes/:id/comments', type: :request do
     describe 'successfully' do
       before do
         post "/api/recipes/#{recipe.id}/comments",
-             params: { comment: { body: 'Awesome recipe' } }, header: credentials
+             params: { comment: { body: 'Awesome recipe' } }, headers: credentials
         @comment = Comment.last
       end
 
