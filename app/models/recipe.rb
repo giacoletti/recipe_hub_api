@@ -14,4 +14,17 @@ class Recipe < ApplicationRecord
                 disposition: 'inline')
     end
   end
+
+  def fork(user)
+    forked_recipe = dup
+    forked_recipe.user = user
+    forked_recipe.save
+    if ingredients
+      ingredients.each do |ingredient|
+        forked_recipe.ingredients.create(ingredient: ingredient.ingredient, amount: ingredient.amount,
+                                         unit: ingredient.unit)
+      end
+    end
+    forked_recipe
+  end
 end
