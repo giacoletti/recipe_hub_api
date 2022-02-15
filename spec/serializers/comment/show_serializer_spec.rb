@@ -20,7 +20,7 @@ RSpec.describe Comment::ShowSerializer, type: :serializer do
 
   it 'is expected to contain keys with specific data types' do
     expect(subject).to match(
-      'recipe_ingredient' => {
+      'comment' => {
         'body' => an_instance_of(String),
         'user' => an_instance_of(String)
       }

@@ -2,7 +2,10 @@ RSpec.describe 'GET /api/recipes/:id', type: :request do
   describe 'successfully' do
     let!(:ingredient1) {  create(:ingredient, { name: 'sugar' }) }
     let!(:ingredient2) { create(:ingredient, { name: 'milk' }) }
-    let!(:recipe) { create(:recipe, name: 'Pancakes', instructions: 'Mix it together') }
+    let!(:user) { create(:user, name: 'Lissa Bode') }
+    let!(:comment1) { create(:comment, body: 'something', user: user) }
+    let!(:comment2) { create(:comment, body: 'awesome', user: user) }
+    let!(:recipe) { create(:recipe, name: 'Pancakes', instructions: 'Mix it together', comments: [comment1, comment2]) }
 
     let!(:ingredients_recipe) do
       create(:recipe_ingredient, recipe: recipe, ingredient: ingredient1)
@@ -32,7 +35,9 @@ RSpec.describe 'GET /api/recipes/:id', type: :request do
     end
 
     it 'is expected to return recipe comments' do
-      expect(response_json['recipe']['comments']).to eq 'something'
+      expected_response = [{ 'body' => 'something', 'user' => 'Lissa Bode' },
+                           { 'body' => 'awesome', 'user' => 'Lissa Bode' }]
+      expect(response_json['recipe']['comments']).to eq expected_response
     end
   end
 
