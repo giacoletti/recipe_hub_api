@@ -8,7 +8,6 @@ class NotificationsChannel < ApplicationCable::Channel
   end
 
   def receive(data)
-    # binding.pry
-    ActionCable.server.broadcast 'NotificationsChannel', { message: data['message'] };
+    ActionCable.server.broadcast 'notifications_channel', { message: data['message'] };
   end
 end
