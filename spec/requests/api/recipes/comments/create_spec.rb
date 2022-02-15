@@ -54,6 +54,19 @@ RSpec.describe 'POST /api/recipes/:id/comments', type: :request do
           expect(response_json['message']).to eq 'Comment is missing'
         end
       end
+
+      describe 'due to missing comment body' do
+        before do
+          post "/api/recipes/#{recipe.id}/comments",
+               params: { comment: { body: '' } }, headers: credentials
+        end
+
+        it { is_expected.to have_http_status :unprocessable_entity }
+
+        it 'is expected to respond with an error message' do
+          expect(response_json['message']).to eq "Body can't be blank"
+        end
+      end
     end
   end
 end
