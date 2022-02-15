@@ -14,7 +14,7 @@ RSpec.describe Recipe::IndexSerializer, type: :serializer do
     expect(subject.keys).to match ['recipes']
   end
   it 'is expected to include relevant keys' do
-    expected_keys = %w[id image name instructions created_at updated_at user]
+    expected_keys = %w[id image name instructions created_at updated_at user forks_count]
     expect(subject['recipes'].first.keys).to match expected_keys
   end
   it 'is expected to contain keys with values of specific data types' do
@@ -27,6 +27,7 @@ RSpec.describe Recipe::IndexSerializer, type: :serializer do
         'created_at' => an_instance_of(String),
         'updated_at' => an_instance_of(String),
         'user' => an_instance_of(String),
+        'forks_count' => an_instance_of(Integer)
       }
     )
   end

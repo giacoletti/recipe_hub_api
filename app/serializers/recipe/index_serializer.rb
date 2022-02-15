@@ -1,5 +1,5 @@
 class Recipe::IndexSerializer < ActiveModel::Serializer
-  attributes :id, :image, :name, :instructions, :created_at, :updated_at, :user
+  attributes :id, :image, :name, :instructions, :created_at, :updated_at, :user, :forks_count
 
   def created_at
     object.created_at.to_formatted_s(:long)
