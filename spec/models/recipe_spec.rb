@@ -11,6 +11,7 @@ RSpec.describe Recipe, type: :model do
 
   describe 'Associations' do
     it { is_expected.to have_many(:ingredients) }
+    it { is_expected.to have_many(:comments) }
   end
 
   describe 'Factory' do
