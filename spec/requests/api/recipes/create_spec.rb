@@ -5,6 +5,9 @@ RSpec.describe 'POST /api/recipes', type: :request do
   let(:credentials) { user.create_new_auth_token }
   let!(:rice) { create(:ingredient, name: 'Rice') }
   let!(:kimchi) { create(:ingredient, name: 'Kimchi') }
+  let!(:original_recipe) { create(:recipe, user: user) }
+  let(:new_user) { create(:user, name: 'Elvita') }
+  let(:new_credentials) { new_user.create_new_auth_token }
 
   describe 'as an authenticated user' do
     describe 'successfully' do
@@ -42,6 +45,28 @@ RSpec.describe 'POST /api/recipes', type: :request do
 
       it 'is expected to associate recipe with ingredients' do
         expect(@recipe.ingredients.size).to eq 2
+      end
+
+      describe 'can fork a recipe' do
+        before do
+          post '/api/recipes', params: {
+            recipe: {
+              id: original_recipe.id,
+              fork: true
+            }
+          }, headers: new_credentials
+          @recipe = Recipe.find(original_recipe.id)
+        end
+
+        it { is_expected.to have_http_status :created }
+
+        it 'is expected to respond with a success message' do
+          expect(response_json['message']).to eq 'The recipe was successfully forked and saved in uyour collection'
+        end
+
+        it 'is expected to have original recipe forks count up to 1' do
+          expect(@recipe.forks_count).to eq 1
+        end
       end
     end
 
@@ -93,6 +118,21 @@ RSpec.describe 'POST /api/recipes', type: :request do
 
         it 'is expected to respond with an error message' do
           expect(response_json['message']).to eq "Instructions can't be blank"
+        end
+      end
+
+      describe 'cannot fork recipe due to invalid id' do
+        before do
+          post '/api/recipes', params: {
+            recipe: {
+              id: 'AODHSAJOSDA',
+              fork: true
+            }
+          }, headers: new_credentials
+        end
+
+        it 'is expected to respond with an error message' do
+          expect(response_json['message']).to eq 'Recipe not found'
         end
       end
     end
