@@ -27,7 +27,7 @@ class Api::RecipesController < ApplicationController
     if params[:recipe][:fork]
       recipe = Recipe.find(params[:recipe][:id])
       recipe.fork(current_user)
-      render json: { message: 'The recipe was successfully forked and saved in uyour collection' }, status: 201
+      render json: { message: 'The recipe was successfully forked and saved in your collection' }, status: 201
     else
 
       recipe = current_user.recipes.create(recipe_params)

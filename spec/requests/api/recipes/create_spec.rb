@@ -61,7 +61,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
         it { is_expected.to have_http_status :created }
 
         it 'is expected to respond with a success message' do
-          expect(response_json['message']).to eq 'The recipe was successfully forked and saved in uyour collection'
+          expect(response_json['message']).to eq 'The recipe was successfully forked and saved in your collection'
         end
 
         it 'is expected to have original recipe forks count up to 1' do

@@ -22,7 +22,8 @@ class Recipe < ApplicationRecord
     forked_recipe.save
     if ingredients
       ingredients.each do |ingredient|
-        forked_recipe.ingredients.create(ingredient: ingredient.ingredient, amount: ingredient.amount,
+        forked_recipe.ingredients.create(ingredient: ingredient.ingredient,
+                                         amount: ingredient.amount,
                                          unit: ingredient.unit)
       end
     end
