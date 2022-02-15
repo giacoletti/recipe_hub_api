@@ -3,6 +3,7 @@ class Recipe < ApplicationRecord
   scope :by_recently_created, -> { order(created_at: :desc) }
   has_many :ingredients, class_name: 'RecipeIngredient'
   belongs_to :user
+  has_many :comments
   accepts_nested_attributes_for :ingredients
   has_one_attached :image
 
