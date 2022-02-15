@@ -30,6 +30,10 @@ RSpec.describe 'GET /api/recipes/:id', type: :request do
                            { 'name' => 'milk', 'amount' => 6.0, 'unit' => 'dl' }]
       expect(response_json['recipe']['ingredients']).to eq expected_response
     end
+
+    it 'is expected to return recipe comments' do
+      expect(response_json['recipe']['comments']).to eq 'something'
+    end
   end
 
   describe 'unsuccessfully - id not found' do
