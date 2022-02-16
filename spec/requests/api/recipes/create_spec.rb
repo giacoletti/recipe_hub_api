@@ -16,7 +16,8 @@ RSpec.describe 'POST /api/recipes', type: :request do
             ingredients_attributes: [
               { ingredient_id: rice.id, unit: 'gram', amount: '2000' },
               { ingredient_id: kimchi.id, unit: 'gram', amount: '2000' }
-            ]
+            ],
+            image: "data:image/png;base64,/9j/4AAQSkZJRgABAQEASABIAAD/4gxYSUNDX1BST0ZJTEUAAQEAAAxITGlubwIQAABtbnR"
           }
         }, headers: credentials
         @recipe = Recipe.last
@@ -26,6 +27,11 @@ RSpec.describe 'POST /api/recipes', type: :request do
 
       it 'is expected to create an instance of a Recipe' do
         expect(@recipe).to_not eq nil
+      end
+
+      it 'is expected to attach the image' do
+        # binding.pry
+        expect(@recipe.image).to be_attached
       end
 
       it 'is expected to have saved the recipe in the database' do
