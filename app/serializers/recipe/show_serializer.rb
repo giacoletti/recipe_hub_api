@@ -1,5 +1,5 @@
 class Recipe::ShowSerializer < ActiveModel::Serializer
-  attributes :id, :name, :instructions, :ingredients, :created_at, :owner, :comments
+  attributes :id, :name, :instructions, :ingredients, :created_at, :owner, :comments, :forks_count
   has_many :ingredients, serializer: Ingredient::ShowSerializer
   has_many :comments, serializer: Comment::ShowSerializer
 
