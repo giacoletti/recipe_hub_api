@@ -24,21 +24,9 @@ class Api::RecipesController < ApplicationController
   end
 
   def create
-    recipe = current_user.recipes.create(recipe_params)
-    if recipe.persisted? && attach_image(recipe)
-      render json: { recipe: recipe, message: 'Your recipe has been created' }, status: 201
-    elsif params[:recipe][:fork]
-      recipe = Recipe.find(params[:recipe][:id])
-      recipe.fork(current_user)
-      render json: { message: 'The recipe was successfully forked and saved in your collection' }, status: 201
-    else
-      recipe = current_user.recipes.create(recipe_params)
-      if recipe.persisted?
-        render json: { recipe: recipe, message: 'Your recipe has been created' }, status: 201
-      else
-        render_error(recipe.errors.full_messages.to_sentence, 422)
-      end
-    end
+    fork_recipe and return if params[:recipe][:fork]
+
+    create_recipe
   end
 
   def destroy
@@ -73,5 +61,20 @@ class Api::RecipesController < ApplicationController
 
   def attach_image(recipe)
     DecodeService.attach_image(recipe, params[:recipe][:image])
+  end
+
+  def create_recipe
+    recipe = current_user.recipes.create(recipe_params)
+    if recipe.persisted? && attach_image(recipe)
+      render json: { recipe: recipe, message: 'Your recipe has been created' }, status: 201
+    else
+      render_error(recipe.errors.full_messages.to_sentence, 422)
+    end
+  end
+
+  def fork_recipe
+    recipe = Recipe.find(params[:recipe][:id])
+    recipe.fork(current_user)
+    render json: { message: 'The recipe was successfully forked and saved in your collection' }, status: 201
   end
 end
