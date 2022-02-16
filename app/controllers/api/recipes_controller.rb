@@ -27,8 +27,18 @@ class Api::RecipesController < ApplicationController
     recipe = current_user.recipes.create(recipe_params)
     if recipe.persisted? && attach_image(recipe)
       render json: { recipe: recipe, message: 'Your recipe has been created' }, status: 201
+    if params[:recipe][:fork]
+      recipe = Recipe.find(params[:recipe][:id])
+      recipe.fork(current_user)
+      render json: { message: 'The recipe was successfully forked and saved in your collection' }, status: 201
     else
-      render_error(recipe.errors.full_messages.to_sentence, 422)
+
+      recipe = current_user.recipes.create(recipe_params)
+      if recipe.persisted?
+        render json: { recipe: recipe, message: 'Your recipe has been created' }, status: 201
+      else
+        render_error(recipe.errors.full_messages.to_sentence, 422)
+      end
     end
   end
 
