@@ -22,8 +22,11 @@ RSpec.describe 'GET /api/recipes', type: :request do
       it 'is expected to respond the with right instructions' do
         expect(response_json['recipes'].first['instructions']).to_not eq nil
       end
-    end
 
+      it 'is expected to respond with a recipe lede' do
+        expect(response_json['recipes'].first['lede']).to_not eq nil
+      end
+    end
     describe 'filter recipes by user' do
       before do
         get '/api/recipes', params: { user: user.email }
