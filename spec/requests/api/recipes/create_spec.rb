@@ -95,7 +95,8 @@ RSpec.describe 'POST /api/recipes', type: :request do
               instructions: 'Mix and shake it',
               ingredients_attributes: [
                 { ingredient_id: rice.id, unit: 'gram', amount: '2000' }
-              ]
+              ],
+              image: 'data:image/image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEBCAMAAAD1kWivAAADAFB'
             }
           }, headers: credentials
         end
@@ -114,7 +115,8 @@ RSpec.describe 'POST /api/recipes', type: :request do
               name: 'Spaghetti bolognese',
               ingredients_attributes: [
                 { ingredient_id: rice.id, unit: 'gram', amount: '2000' }
-              ]
+              ],
+              image: 'data:image/image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEBCAMAAAD1kWivAAADAFB'
             }
           }, headers: credentials
         end
@@ -123,6 +125,26 @@ RSpec.describe 'POST /api/recipes', type: :request do
 
         it 'is expected to respond with an error message' do
           expect(response_json['message']).to eq "Instructions can't be blank"
+        end
+      end
+
+      describe 'due to missing recipe image' do
+        before do
+          post '/api/recipes', params: {
+            recipe: {
+              name: 'Fried rice with kimchi',
+              instructions: 'Mix and shake it',
+              ingredients_attributes: [
+                { ingredient_id: rice.id, unit: 'gram', amount: '200' }
+              ]
+            }
+          }, headers: credentials
+        end
+
+        it { is_expected.to have_http_status :unprocessable_entity }
+
+        it 'is expected to respond with an error message' do
+          expect(response_json['message']).to eq 'A recipe must have an image'
         end
       end
 
