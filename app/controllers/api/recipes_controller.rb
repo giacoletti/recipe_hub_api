@@ -40,7 +40,11 @@ class Api::RecipesController < ApplicationController
   private
 
   def validate_params_presence
-    render_error('Recipe is missing', :unprocessable_entity) if params[:recipe].nil?
+    if params[:recipe].nil?
+      render_error('Recipe is missing', :unprocessable_entity)
+    elsif params[:recipe][:image].nil? && params[:recipe][:fork].nil?
+      render_error('A recipe must have an image', :unprocessable_entity)
+    end
   end
 
   def find_recipe
