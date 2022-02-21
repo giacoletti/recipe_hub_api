@@ -61,6 +61,7 @@ RSpec.describe 'POST /api/recipes', type: :request do
             }
           }, headers: new_credentials
           @recipe = Recipe.find(original_recipe.id)
+          @forked_recipe = Recipe.last
         end
 
         it { is_expected.to have_http_status :created }
@@ -71,6 +72,14 @@ RSpec.describe 'POST /api/recipes', type: :request do
 
         it 'is expected to have original recipe forks count up to 1' do
           expect(@recipe.forks_count).to eq 1
+        end
+
+        it 'is expected to have duplicated image attached' do
+          expect(@forked_recipe.image).to be_attached
+        end
+
+        it 'is expected to have new owner to the forked recipe' do
+          expect(@forked_recipe.user.name).to eq new_user.name
         end
       end
     end
