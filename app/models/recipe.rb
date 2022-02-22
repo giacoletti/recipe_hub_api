@@ -27,6 +27,12 @@ class Recipe < ApplicationRecord
                                          unit: ingredient.unit)
       end
     end
+    duplicated_image = image.blob.download
+    forked_recipe.image.attach(
+      io: StringIO.new(duplicated_image),
+      filename: image.filename.to_s,
+      content_type: image.content_type
+    )
     update(forks_count: forks_count + 1)
     forked_recipe
   end
