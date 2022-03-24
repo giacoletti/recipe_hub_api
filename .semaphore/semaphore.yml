@@ -13,19 +13,19 @@ blocks:
         - name: RAILS_ENV
           value: test
         - name: CC_TEST_REPORTER_ID
-          value: 3f90ffafb23eb635cff6a554089f057ed88e791be5a783dc880e9fe885b2639d
+          value: 6bbbd2c7f8140651c1f063418746e20606d8d0a4dfe60eb164746f15c4b4ed28
       jobs:
         - name: Test
           commands:
             - checkout
             - sem-service start postgres 11
             - sem-version ruby 3.0.0
-            - 'curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter'
+            - '''curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter'''
             - chmod +x ./cc-test-reporter
             - ./cc-test-reporter before-build
             - bundle update --bundler
             - bundle install
-            - 'bundle exec rails db:create db:migrate'
+            - '''bundle exec rails db:create db:migrate'''
             - bundle exec rspec
       epilogue:
         always:
